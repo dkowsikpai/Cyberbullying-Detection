@@ -6,15 +6,8 @@ import torch.nn.functional as F
 from transformers import AutoTokenizer, BertModel, BertTokenizer, AdamW, get_linear_schedule_with_warmup
 
 from models import CyberbullyingClassifier
+from config import *
 
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-print(f'Device: {device}')
-
-PRE_TRAINED_MODEL_NAME = 'nreimers/BERT-Tiny_L-2_H-128_A-2'
-SAVED_MODEL_NAME = './Model/best_model_state.bin'
-BATCH_SIZE = 32
-MAX_LEN = "max_length"
-class_names = ["Normal", "Abusive"]
 
 # DATASET_NAME = "clean_hatespeech_text_label_vote.csv"
 # RANDOM_STATE = 42
@@ -60,7 +53,7 @@ def get_predictions(model, data_loader):
 
 if __name__ == "__main__":
 
-    best_model = CyberbullyingClassifier(PRE_TRAINED_MODEL_NAME, n_classes=len(class_names))
+    best_model = CyberbullyingClassifier(PRE_TRAINED_MODEL_NAME, n_classes=len(CLASS_NAMES))
     best_model.load_state_dict(torch.load(SAVED_MODEL_NAME, map_location=torch.device(device)))
     best_model = best_model.to(device)
     
@@ -79,5 +72,5 @@ if __name__ == "__main__":
 
 
     print(f'Review text: {review_text}')
-    print(f'Sentiment  : {class_names[prediction]}')
+    print(f'Sentiment  : {CLASS_NAMES[prediction]}')
 
